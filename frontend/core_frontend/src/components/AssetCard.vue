@@ -13,6 +13,12 @@
 </script>
 <template>
     <div class ="card">
+        <div class = "image-container">
+            <img v-if = "asset.image" :src="asset.image" alt="Asset Thumbnail" />
+            <div v-else class="placeholder">
+                <span>🧊 No Preview </span>
+            </div>
+        </div>
         <div class="card-header">
             <h2>{{ asset.name }}</h2>
             <div class="actions">
@@ -24,10 +30,12 @@
                 ✏️</button>
             </div>
         </div>
+
         <p>Poligons: <strong>{{ asset.poly_count }}</strong></p>
         <p class="author">Autore: {{ asset.author ? asset.author : "Anonymus" }}</p> 
+        <a v-if="asset.asset_file" :href="asset.asset_file" class="download-link" download>
+            💾 Download Model</a>
     </div>
-
 </template>
 <style scoped>
    .card {
@@ -67,5 +75,40 @@
    }
    .edit-btn:hover { transform: scale(1.2);}
    .delete-btn:hover { transform: scale(1.2);}
+
+   .image-container {
+  width: 100%;
+  height: 150px; /* Altezza fissa per uniformità */
+  background: #333;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Taglia l'immagine per riempire il box senza deformarla */
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 0.8em;
+}
+
+.download-link {
+  display: block;
+  margin-top: 10px;
+  color: #42b883;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.download-link:hover { text-decoration: underline; }
+
 
 </style>

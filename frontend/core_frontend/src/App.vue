@@ -33,65 +33,73 @@
  
 
   const handleCreate = async (newAssetData) => {
-     const headers = {
-    'Content-type': 'application/json',
-    'Authorization': `Token ${token.value}`
-  }
-    if(assetToEdit.value == null){
-    try {
-      const response = await fetch ('http://127.0.0.1:8000/core/assets/', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(newAssetData)
-      })
+    const dataToSend = new FormData()
+    dataToSend.append('name', newAssetData.name)
+    dataToSend.append('poly_count', newAssetData.poly_count)
+    dataToSend.append('category', 1)
 
-      if(response.ok){
-        console.log("OK-created")
-        fetch_assets();
-      }
-    } catch(error){
-      console.error("Error:", error)
+    if(newAssetData.image){
+      dataToSend.append('image', newAssetData.image)}
+    
+    if(newAssetData.asset_file){
+      dataToSend.append('asset_file', newAssetData.asset_file)
     }
-  } else {
-      try {
-        const assetId = assetToEdit.value.id
-        const response = await fetch (`http://127.0.0.1:8000/core/assets/${assetId}/`, {
-          method: 'PUT',
-          headers: headers,
-          body: JSON.stringify(newAssetData)
-        })
 
+    const headers = {'Authorization': `Token ${token.value}`}
+    
+    try{
+      if(assetToEdit.value === null){
+        const response = await fetch ('http://127.0.0.1:8000/core/assets/', {
+          method: 'POST',
+          headers: headers,
+          body: dataToSend
+        })
         if(response.ok){
           console.log("OK-created")
           fetch_assets();
-          assetToEdit.value = null
         }
-      } catch(error){
-        console.error("Error:", error)
       }
+      else{
+          const assetId = assetToEdit.value.id
+          const response = await fetch (`http://127.0.0.1:8000/core/assets/${assetId}/`, {
+            method: 'PATCH',
+            headers: headers,
+            body: dataToSend
+          })
+
+          if(response.ok){
+            console.log("OK-edited")
+            fetch_assets();
+            assetToEdit.value = null
+          }
+
+      }
+
+    } catch(error) {
+      console.error("Errore upload:", error)
+      alert("Something went wrong")
+
     }
-
   }
-
 
   const handleDelete = async (assetId) => {
-    if (!confirm("Confirm delete")) return
-    //console.log(assetId.id)
-    //console.log('http://127.0.0.1:8000/core/assets/' + assetId.id +'/')
-    try{
-      
-    const response = await fetch(`http://127.0.0.1:8000/core/assets/${assetId.id}/`, {
-      method: "DELETE",
-      headers : {'Authorization': `Token ${token.value}`}
-    })
+      if (!confirm("Confirm delete")) return
+      //console.log(assetId.id)
+      //console.log('http://127.0.0.1:8000/core/assets/' + assetId.id +'/')
+      try{
+        
+      const response = await fetch(`http://127.0.0.1:8000/core/assets/${assetId.id}/`, {
+        method: "DELETE",
+        headers : {'Authorization': `Token ${token.value}`}
+      })
 
-    if(response.ok){
-      console.log("Ok-Deleted")
-      fetch_assets();
+      if(response.ok){
+        console.log("Ok-Deleted")
+        fetch_assets();
+      }
+    } catch(error) {
+      console.log("Error:", error)
     }
-  } catch(error) {
-    console.log("Error:", error)
-  }
 
   }
 
@@ -117,8 +125,9 @@
   }
 
   const handleLogout = () => {
-    token.value = null;
+    token.value = null
     localStorage.removeItem('user-token')
+    
   }
 
 </script>

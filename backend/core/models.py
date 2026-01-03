@@ -13,6 +13,9 @@ class Asset(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='asset_images/', null=True, blank=True)
+    asset_file = models.FileField(upload_to='asset_files/', null=True, blank=True)
+
 
     def __str__(self):
         return self.name
