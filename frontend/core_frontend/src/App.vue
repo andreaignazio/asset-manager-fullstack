@@ -14,7 +14,7 @@
   } else {console.log("token-not-defined")}
     
   async function fetch_assets(){
-      const response = await fetch('http://127.0.0.1:8000/core/assets/')
+      const response = await fetch(import.meta.env.VITE_API_URL +'/core/assets/')
       const data = await response.json()
       assets.value = data
     }
@@ -49,7 +49,7 @@
     
     try{
       if(assetToEdit.value === null){
-        const response = await fetch ('http://127.0.0.1:8000/core/assets/', {
+        const response = await fetch (import.meta.env.VITE_API_URL + '/core/assets/', {
           method: 'POST',
           headers: headers,
           body: dataToSend
@@ -61,7 +61,7 @@
       }
       else{
           const assetId = assetToEdit.value.id
-          const response = await fetch (`http://127.0.0.1:8000/core/assets/${assetId}/`, {
+          const response = await fetch (import.meta.env.VITE_API_URL +`/core/assets/${assetId}/`, {
             method: 'PATCH',
             headers: headers,
             body: dataToSend
@@ -84,11 +84,9 @@
 
   const handleDelete = async (assetId) => {
       if (!confirm("Confirm delete")) return
-      //console.log(assetId.id)
-      //console.log('http://127.0.0.1:8000/core/assets/' + assetId.id +'/')
       try{
         
-      const response = await fetch(`http://127.0.0.1:8000/core/assets/${assetId.id}/`, {
+      const response = await fetch(import.meta.env.VITE_API_URL + `/core/assets/${assetId.id}/`, {
         method: "DELETE",
         headers : {'Authorization': `Token ${token.value}`}
       })
@@ -106,7 +104,7 @@
   const handleLogin = async (credentials) => {
     try{
         console.log(credentials)
-        const response = await fetch('http://127.0.0.1:8000/auth/token/login/', {
+        const response = await fetch(import.meta.env.VITE_API_URL +'/auth/token/login/', {
           method: "POST",
           headers: { 'Content-type': 'application/json'},
           body: JSON.stringify(credentials)
