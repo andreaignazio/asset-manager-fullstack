@@ -27,9 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^0_apyui@*2-s%z*-iu*+w735((6vd&c-y*r8n!$216%lw+(ji'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 
+    '127.0.0.1', 
+    'asset-manager-backend-5a8w.onrender.com']
 
 
 # Application definition
