@@ -1,0 +1,13 @@
+# --- PYTHON & DJANGO ---
+__pycache__/
+*.py[cod]
+venv/
+.env
+db.sqlite3
+backend/media/
+
+# --- NODE & VUE ---
+node_modules/
+dist/
+.DS_Store
+.vscode/
